@@ -35,7 +35,7 @@ type NativeTun struct {
 	name                    string     // name of interface
 	errors                  chan error // async error handling
 	events                  chan Event // device related events
-	nopi                    bool       // the device was pased IFF_NO_PI
+	nopi                    bool       // the device was passed IFF_NO_PI
 	netlinkSock             int
 	netlinkCancel           *rwcancel.RWCancel
 	hackListenerClosed      sync.Mutex
@@ -85,7 +85,7 @@ func createNetlinkSocket() (int, error) {
 	}
 	saddr := &unix.SockaddrNetlink{
 		Family: unix.AF_NETLINK,
-		Groups: uint32((1 << (unix.RTNLGRP_LINK - 1)) | (1 << (unix.RTNLGRP_IPV4_IFADDR - 1)) | (1 << (unix.RTNLGRP_IPV6_IFADDR - 1))),
+		Groups: unix.RTMGRP_LINK | unix.RTMGRP_IPV4_IFADDR | unix.RTMGRP_IPV6_IFADDR,
 	}
 	err = unix.Bind(sock, saddr)
 	if err != nil {
